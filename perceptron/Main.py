@@ -53,7 +53,7 @@ def grad(X,y,c):
     :param c:
     :return:
     '''
-    dw = -np.sum(y[c]*X[:,c])
+    dw = -np.sum(y[c]*X[:,c],axis=1)
     db = -np.sum(y[c])
     return dw,db
 def updata_parameters(w,b,dw,db,learning_rate):
@@ -78,9 +78,12 @@ c = mistake(X,y,w,b)
 cost = compute_cost(X,y,w,b,c)
 i = 0
 #当有错位分类点不停迭代
+dw,db = grad(X,y,c)#计算梯度
+print(dw)
+w,b = updata_parameters(w,b,dw,db,0.001)#更新参数
 while cost>0:
-    # if i%500==0:
-    #     print('迭代{0}次，损失值为{1}:'.format(i,cost))
+    if i%50==0:
+        print('迭代{0}次，损失值为{1}:'.format(i,cost))
     dw,db = grad(X,y,c)#计算梯度
     w,b = updata_parameters(w,b,dw,db,0.001)#更新参数
     c = mistake(X,y,w,b)#求错误分类点，bool数组形式
